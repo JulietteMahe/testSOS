@@ -1,0 +1,625 @@
+---
+layout: tool
+
+title: 'Email Subject Line Tester: Verify Any Email Address for Free'
+description: Test the performances of your email's subject thanks to our free subject tester tool.
+
+og_title: Email Subject Line Tester by Mailmeteor
+og_description: Test the performances of your email's subject thanks to our free subject tester tool.
+og_url: https://mailmeteor.com/email-subject-line-tester
+
+permalink: /email-subject-line-tester
+canonical: https://mailmeteor.com/email-subject-line-tester
+---
+
+<main>
+  <header class="container text-center">
+    <h1>Email Subject Line Tester <sup class="action-lg text-blue-dark-reverse">BETA</sup></h1>
+    <p>Test the performances of your email's subject thanks to our free subject tester tool.</p>
+  </header>
+
+  {% raw %}
+  <section id="app" class="container my-5 pb-5">
+    <div class="w-75 mx-auto shadow-default border-radius-lg w-100" style="border: 1px solid #e6e7eb">
+
+      <form id="subject-tester-form" @submit.prevent="onSubmitTest" class="subject-tester-form" autocomplete="off">
+        <input type="hidden" autocomplete="false" />
+        <label for="subject-to-check">Enter your subject line here to verify:</label>
+        <div class="input-group">
+          <input class="form-control" type="text" required placeholder="What's new? Tons of new features!"
+            v-model.trim="subject" />
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-tertiary py-0 test-btn" id="test-btn">Test</button>
+          </div>
+        </div>
+      </form>
+
+      <div style="display: visible" class="results-container">
+
+        <div v-if="isFetchInProgress">
+          <div class="px-5 py-4 d-flex justify-content-start"
+            style="background-color: #f2f3f5; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px">
+            <img src="/assets/img/tools/email-checker-loading.svg" width="62" height="62" />
+            <div class="ml-4">
+              <h3>Loading</h3>
+              <p class="m-0">Currently testing your subject line</p>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="isErrorWhenFetching">
+          <div class="px-5 py-4 d-flex justify-content-start"
+            style="background-color: #f2f3f5; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px">
+            <img src="/assets/img/tools/email-checker-invalid.svg" width="62" height="62" />
+            <div class="ml-4">
+              <h3>Something went wrong</h3>
+              <p class="m-0">We could not validate that email address right now. Please try again</p>
+            </div>
+          </div>
+        </div>
+
+        <div v-else class="all-results" v-for="(x,i) in results" :key="i">
+          <div class="row results-row">
+            <div class="col inner-result" @click="onClickAlternatives(x.sentence)" href=’${setSubjectFromUrl()}’>
+              {{ x.sentence }}
+            </div>
+            <div class="inner-score-action">
+              <div class="transparent-icons clipboard-copy" @click="onCopyResult(x.sentence)" data-toggle="tooltip"
+                data-placement="top" title="Copy to clipboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#353535" class="bi bi-files"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
+                </svg>
+              </div>
+              <div :class="scoreClassname(x.score)" class="font-weight-bold">{{ x.score }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="test-it py-3 example-container">
+
+      Examples:
+
+      <a href="/email-subject-line-tester?subject=What%27s+new%3F+Tons+of+new+features%21">What's
+        new?
+        Tons of new features!</a> -
+      <a href="/email-subject-line-tester?subject=Our+latest+feature+is+now+available...">Our
+        latest
+        feature is now available...</a> -
+      <a href="/email-subject-line-tester?subject=Let%27s+get+your+hands+on+our+new+feature%21">Let's
+        get your hands on our new feature!</a>
+
+    </div>
+  </section>
+  {% endraw %}
+
+  <section class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <h2 class="mb-3">The fatest way to verify an email subject line</h2>
+        <p>
+          Email Subject Line Tester by Mailmeteor scores an email subject line in a few seconds for free, providing as
+          well alternative subject lines. Checks are made at multiple
+          levels: length, number of words, number of question mark and exclamation points, presence of emojis or spam
+          words, to make sure your email will be well received by your
+          audience.
+        </p>
+      </div>
+      <div class="col-lg-5 offset-lg-1">
+        <div>
+          <h3 class="text-blue-dark-reverse action-lg">Other tools</h3>
+          <div>
+            <h3 class="mt-3">Email Permutator</h3>
+            <p>
+              Find anyone's email address thanks to our
+              <a href="/email-permutator">free email permutator
+                <svg width="12" height="12" viewBox="0 0 16 16" style="margin-left: 0.25rem" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M1 7C0.447715 7 0 7.44772 0 8C0 8.55228 0.447715 9 1 9V7ZM15 8L15.7071 8.70711C16.0976 8.31658 16.0976 7.68342 15.7071 7.29289L15 8ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893C6.90237 0.683418 6.90237 1.31658 7.29289 1.70711L8.70711 0.292893ZM7.29289 14.2929C6.90237 14.6834 6.90237 15.3166 7.29289 15.7071C7.68342 16.0976 8.31658 16.0976 8.70711 15.7071L7.29289 14.2929ZM1 9H15V7H1V9ZM7.29289 1.70711L14.2929 8.70711L15.7071 7.29289L8.70711 0.292893L7.29289 1.70711ZM14.2929 7.29289L7.29289 14.2929L8.70711 15.7071L15.7071 8.70711L14.2929 7.29289Z"
+                    fill="#1a53ff" />
+                </svg>
+              </a>
+            </p>
+          </div>
+          <div>
+            <h3 class="mt-3">Spam Word Checker</h3>
+            <p>
+              Make sure your emails don't land in spam with our
+              <a href="/spam-checker">free spam words checker
+                <svg width="12" height="12" viewBox="0 0 16 16" style="margin-left: 0.25rem" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M1 7C0.447715 7 0 7.44772 0 8C0 8.55228 0.447715 9 1 9V7ZM15 8L15.7071 8.70711C16.0976 8.31658 16.0976 7.68342 15.7071 7.29289L15 8ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893C6.90237 0.683418 6.90237 1.31658 7.29289 1.70711L8.70711 0.292893ZM7.29289 14.2929C6.90237 14.6834 6.90237 15.3166 7.29289 15.7071C7.68342 16.0976 8.31658 16.0976 8.70711 15.7071L7.29289 14.2929ZM1 9H15V7H1V9ZM7.29289 1.70711L14.2929 8.70711L15.7071 7.29289L8.70711 0.292893L7.29289 1.70711ZM14.2929 7.29289L7.29289 14.2929L8.70711 15.7071L15.7071 8.70711L14.2929 7.29289Z"
+                    fill="#1a53ff" />
+                </svg>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials text-center my-5">
+    <h3 class="action-lg text-blue-dark-reverse">Trusted by 3 million professionnals</h3>
+    {%- include testimonials-logo.html size="sm" -%}
+  </section>
+
+  <section class="faq" itemscope itemtype="https://schema.org/FAQPage">
+    <h3 id="faq" class="text-center">Questions & answers about email subject line tester</h3>
+    <p class="text-center">Everything you need to know about how and why checking email subject lines.</p>
+
+    <div id="accordion-general" class="accordions">
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading1" data-toggle="collapse"
+          data-target="#collapse1">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse1">How to
+            use email subject line tester?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse1" class="collapse"
+          aria-labelledby="heading1" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            Email subject line tester is a free, easy to use and simple tool. Just enter the email subject line and
+            click on "Test". We will then proceed with a test providing you
+            alternative subject lines and scoring all of them so you can you choose the best option for your email.
+          </div>
+        </div>
+      </div>
+
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading2" data-toggle="collapse"
+          data-target="#collapse2">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse2">What is
+            an email subject line tester?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse2" class="collapse"
+          aria-labelledby="heading2" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            Email subject line tester is a free tool to test anyone's email subject line. It tests that the email
+            subject line is well conceived, with the good length and without
+            too much spam related wording. In case we detect something wrong, the email subject line score will
+            decrease.
+          </div>
+        </div>
+      </div>
+
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading3" data-toggle="collapse"
+          data-target="#collapse3">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse3">How does
+            an email subject line tester work?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse3" class="collapse"
+          aria-labelledby="heading3" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            <p>Email subject line tester proceeds with several checks to determine if an email subject line is valid:
+            </p>
+            <ol>
+              <li>The email subject must be well formed, not too short and not too long.</li>
+              <li>It should be grammatically correct, with first letter as a cap and ponctuation.</li>
+              <li>The email subject can include emoji but they should not be too numerous.</li>
+              <li>The subject line should not contain spam words.</li>
+            </ol>
+            <p>Depending on the provided email subject line, we might apply extra-checks on a per basis.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading4" data-toggle="collapse"
+          data-target="#collapse4">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse4">Is Email
+            Subject Line Tester Free?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse4" class="collapse"
+          aria-labelledby="heading4" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            <p>
+              Email Subject Line Tester is totally free to use. Mailmeteor makes it available to anyone interested in
+              checking an email subject line and make sure you will be read.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading5" data-toggle="collapse"
+          data-target="#collapse5">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse5">How many
+            email subject lines can I verify per day?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse5" class="collapse"
+          aria-labelledby="heading5" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            We apply a fair-use policy, so you are free to manually use Email Subject Line Tester as long as you don't
+            abuse of it. Any abuse includes, but is not limited to,
+            making automatic requests to our service.
+          </div>
+        </div>
+      </div>
+
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading7" data-toggle="collapse"
+          data-target="#collapse7">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse7">Does
+            email subject line tester use my data?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse7" class="collapse"
+          aria-labelledby="heading7" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            <p>
+              Your data stays yours - <i>like all products made by Mailmeteor</i>. Email addresses that you verify using
+              our email subject line tester are not saved by us nor
+              shared with a third-party. Although, we might temporarly log requests made to the service for maintenance
+              purposes.
+            </p>
+            <p>
+              With this said, this page has Google Analytics and is protected by reCAPTCHA. Consequently, the Google
+              <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Privacy Policy</a>
+              and
+              <a href="https://policies.google.com/terms" rel="noopener" target="_blank">Terms of Service</a>
+              apply.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <div class="card-header accordionpointer collapsed" id="heading8" data-toggle="collapse"
+          data-target="#collapse8">
+          <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true" aria-controls="collapse8">What to
+            do once an email subject line is verified?</h3>
+          <span class="faq-expander"></span>
+        </div>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse8" class="collapse"
+          aria-labelledby="heading8" data-parent="#accordion-general">
+          <div class="card-body" itemprop="text">
+            Once you have verified your email subject line and found the most efficient, you can send a highly
+            personalized email campaign using Gmail with
+            <a href="/">Mailmeteor</a>. Mailmeteor lets you send mass emails in Gmail that feel personal. It’s the most
+            popular
+            <a href="/mail-merge-gmail/">Gmail mail merge</a> tool, trusted by 3 million people worldwide for its
+            simplicity and privacy focus.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/assets/js/lib/vue@2.6.14.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LdNSeodAAAAAJlFvgy3Apoo9Hm5mupppRPJo0hB"></script>
+<script src="/assets/js/lib/jquery@3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        results: [],
+        subject: null,
+        isFetchInProgress: false,
+        isErrorWhenFetching: false,
+      };
+    },
+
+    mounted: function () {
+      var subject = this.getSubjectFromURL();
+      if (subject) {
+        this.subject = subject;
+        this.fetchBackend();
+      }
+    },
+
+    updated: function () {
+      try {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('.clipboard-copy').each(function () {
+          $(this).click(function (e) {
+            var _this = $(this);
+
+            _this.attr('data-original-title', 'Copied!').tooltip('update').tooltip('show');
+
+            setTimeout(function () {
+              _this.attr('data-original-title', 'Copy to clipboard').tooltip('update').tooltip('hide');
+            }, 1000);
+          });
+        });
+      } catch (e) { }
+    },
+
+    methods: {
+      onSubmitTest: function () {
+        this.errors = [];
+        if (!this.subject) {
+          this.errors.push('Please enter your email subject');
+          return;
+        }
+
+        this.fetchBackend();
+        this.setSubjectFromURL();
+      },
+
+      fetchBackend: function () {
+        const results = [];
+        this.results = results;
+
+        if (this.isFetchInProgress) return;
+        this.isFetchInProgress = true;
+
+        // First subject bellow
+        const mySubjectLine = {
+          sentence: this.subject,
+        };
+
+        const baseUrl = window.location.href.indexOf('mailmeteor.com') > 0 ? 'https://mailmeteor-free-tools-4zqxxgfnaq-ue.a.run.app' : 'http://localhost:8080';
+
+        axios
+          .post(`${baseUrl}/api/subject_line_tester`, mySubjectLine)
+          .then((res) => {
+            const resArray = res.data;
+
+            resArray.forEach((element) => {
+              results.push(element);
+            });
+
+            this.results = results;
+          })
+          .then((res) => {
+            if (results.length > 0) {
+              this.isFetchInProgress = false;
+              this.isErrorWhenFetching = false;
+            }
+          })
+          .catch(function (err) {
+            console.error(err);
+            if (err) {
+              this.isErrorWhenFetching = true;
+            }
+          })
+          .finally((err) => {
+            this.isFetchInProgress = false;
+            if (err) {
+              this.isErrorWhenFetching = true;
+            }
+            this.mySubjectLine = "";
+          });
+      },
+
+      onClickAlternatives: function (someResult) {
+        this.subject = someResult;
+        const mySubjectLine = {
+          sentence: this.subject,
+        };
+        this.onSubmitTest(mySubjectLine);
+      },
+
+      scoreClassname: function (score) {
+        return score > 74 ? 'good-score' : score <= 74 && score >= 55 ? 'average-score' : 'bad-score';
+      },
+
+      setSubjectFromURL: function () {
+        var url = new URL(window.location);
+        url.searchParams.set('subject', this.subject);
+        window.history.pushState('', '', url);
+      },
+
+      getSubjectFromURL: function () {
+        var url = new URL(window.location);
+        return url.searchParams.get('subject');
+      },
+
+      onCopyResult: function (sentence) {
+        try {
+          navigator.clipboard.writeText(sentence);
+        } catch (err) {
+          /* do nothing */
+        }
+      },
+    },
+  });
+</script>
+
+<style>
+  .grecaptcha-badge {
+    display: none;
+  }
+
+  /* #### 9.1 Feature page subject testing #### */
+
+  .subject-tester-form {
+    text-align: left;
+    padding: 1.75rem;
+  }
+
+  .input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .test-btn {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin: 0;
+  }
+
+  .all-results {
+    position: relative;
+    background-color: #f2f3f5;
+    width: 100%;
+    padding-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .results-row {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #fff;
+    color: #353535;
+    border-radius: 0.5rem;
+    border: solid 1px #fff;
+    margin: 10px 0px 10px 0px;
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .results-row:hover {
+    box-shadow: 0 2px 0.5em 0 rgba(0, 0, 0, 0.03), 0 2px 0.5em 0 rgba(0, 0, 0, 0.09);
+  }
+
+  .inner-result {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: justify;
+    padding-right: 10px;
+    padding-left: 10px;
+    cursor: pointer;
+  }
+
+  .inner-score-action {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 22%;
+    margin-right: -10px;
+  }
+
+  .transparent-icons {
+    background: none;
+    z-index: 2;
+  }
+
+  .good-score {
+    width: 25px;
+    height: auto;
+    background-color: none;
+    margin: 10px;
+    text-align: center;
+    color: #57dc74;
+    padding-left: 10px;
+  }
+
+  .average-score {
+    width: 25px;
+    height: auto;
+    background-color: none;
+    margin: 10px;
+    text-align: center;
+    color: #fde445;
+    padding-left: 10px;
+  }
+
+  .bad-score {
+    width: 25px;
+    height: auto;
+    background-color: none;
+    margin: 10px;
+    text-align: center;
+    color: #fd6573;
+    padding-left: 10px;
+  }
+
+  .test-it {
+    background-color: none;
+    width: auto;
+    height: auto;
+    padding-left: 1.75rem;
+  }
+
+  .example-container {
+    background-color: #fff;
+    font-size: 0.8rem;
+  }
+
+  @media screen and (min-width: 540px) and (max-width: 768px) {
+    .test-btn {
+      padding-left: 3rem !important;
+      padding-right: 3rem !important;
+      margin: 0;
+    }
+
+    .results-row {
+      font-size: 14px;
+    }
+
+    .inner-score-action {
+      width: 18%;
+    }
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1119px) {
+
+    .test-btn {
+      padding-left: 3rem !important;
+      padding-right: 3rem !important;
+      margin: 0 !important;
+    }
+
+    .results-row {
+      font-size: 14px;
+    }
+
+    .inner-result {
+      padding-left: 20px;
+    }
+
+    .inner-score-action {
+      margin-right: -0px;
+      width: 13%;
+      justify-content: space-around;
+    }
+  }
+
+  @media screen and (min-width: 1120px) {
+
+    .test-btn {
+      padding-left: 3rem !important;
+      padding-right: 3rem !important;
+      margin: 0 !important;
+    }
+
+    .results-row {
+      font-size: 1rem;
+    }
+
+    .inner-result {
+      padding-right: 10px;
+      padding-left: 25px;
+    }
+
+    .inner-score-action {
+      margin-right: 5px;
+      width: 8%;
+      justify-content: space-around;
+    }
+
+    .bi-files {
+      padding-bottom: 5px;
+    }
+  }
+</style>
