@@ -36,6 +36,8 @@ canonical: https://mailmeteor.com/email-subject-line-tester
 
       <div style="display: visible" class="results-container">
 
+
+
         <div v-if="isFetchInProgress">
           <div class="px-5 py-4 d-flex justify-content-start"
             style="background-color: #f2f3f5; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px">
@@ -46,7 +48,6 @@ canonical: https://mailmeteor.com/email-subject-line-tester
             </div>
           </div>
         </div>
-
         <div v-else-if="isErrorWhenFetching">
           <div class="px-5 py-4 d-flex justify-content-start"
             style="background-color: #f2f3f5; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px">
@@ -57,6 +58,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
             </div>
           </div>
         </div>
+
 
         <div v-else class="all-results" v-for="(x,i) in results" :key="i">
           <div class="row results-row">
@@ -358,6 +360,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
 
         if (this.isFetchInProgress) return;
         this.isFetchInProgress = true;
+        this.isErrorWhenFetching = false;
 
         // First subject bellow
         const mySubjectLine = {
@@ -367,7 +370,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
         const baseUrl = window.location.href.indexOf('mailmeteor.com') > 0 ? 'https://mailmeteor-free-tools-4zqxxgfnaq-ue.a.run.app' : 'http://localhost:8080';
 
         axios
-          .post(`${baseUrl}/api/subject_line_tester`, mySubjectLine)
+          .post(`${baseUrl}/api/subject_line_`, mySubjectLine)
           .then((res) => {
             const resArray = res.data;
 
@@ -376,26 +379,31 @@ canonical: https://mailmeteor.com/email-subject-line-tester
             });
 
             this.results = results;
-          })
-          .then((res) => {
-            if (results.length > 0) {
+            if (res) {
               this.isFetchInProgress = false;
-              this.isErrorWhenFetching = false;
+            } else {
+              this.isFetchInProgress = false;
             }
+
           })
           .catch(function (err) {
             console.error(err);
+            console.log("je passe par catch");
             if (err) {
               this.isErrorWhenFetching = true;
             }
+            console.log(this.isErrorWhenFetching);
           })
           .finally((err) => {
             this.isFetchInProgress = false;
-            if (err) {
+            /*if (err) {
               this.isErrorWhenFetching = true;
-            }
+            } else {
+              this.isErrorWhenFetching = false;
+            }*/
             this.mySubjectLine = "";
           });
+        console.log(this.isErrorWhenFetching);
       },
 
       onClickAlternatives: function (someResult) {
