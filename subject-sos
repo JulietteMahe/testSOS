@@ -61,7 +61,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
         <div v-else class="all-results">
 
           <h3 v-if="myRes.length > 0">Your subject line</h3>
-          <div v-for="(a,j) in myRes" :key="j">
+          <div v-for="(a,i) in myRes" :key="i">
             <div class="col inner-result" @click="onClickAlternatives(a.sentence)" href=’${setSubjectFromUrl()}’>
               {{ a.sentence }}
             </div>
@@ -78,7 +78,8 @@ canonical: https://mailmeteor.com/email-subject-line-tester
             </div>
           </div>
 
-          <h3 v-if="otherRes.length > 0">Alternatives from GPT-3 reload</h3>
+          <h3 v-if="otherRes.length > 0">Alternatives from GPT-3 reload
+          </h3>
           <div class="row results-row" v-for="(y,i) in otherRes" :key="i">
             <div class="col inner-result" @click="onClickAlternatives(y.sentence)" href=’${setSubjectFromUrl()}’>
               {{ y.sentence }}
@@ -500,7 +501,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
     padding-bottom: 0px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     padding-left: 1.75rem;
     padding-right: 1.75rem;
   }
