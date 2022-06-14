@@ -36,8 +36,6 @@ canonical: https://mailmeteor.com/email-subject-line-tester
 
       <div style="display: visible" class="results-container">
 
-
-
         <div v-if="isFetchInProgress">
           <div class="px-5 py-4 d-flex justify-content-start"
             style="background-color: #f2f3f5; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px">
@@ -48,6 +46,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
             </div>
           </div>
         </div>
+
         <div v-else-if="isErrorWhenFetching">
           <div class="px-5 py-4 d-flex justify-content-start"
             style="background-color: #f2f3f5; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px">
@@ -59,14 +58,33 @@ canonical: https://mailmeteor.com/email-subject-line-tester
           </div>
         </div>
 
+        <div v-else class="all-results">
 
-        <div v-else class="all-results" v-for="(x,i) in results" :key="i">
-          <div class="row results-row">
-            <div class="col inner-result" @click="onClickAlternatives(x.sentence)" href=’${setSubjectFromUrl()}’>
-              {{ x.sentence }}
+          <h3 v-if="myRes.length > 0">Your subject line</h3>
+          <div v-for="(a,j) in myRes" :key="j">
+            <div class="col inner-result" @click="onClickAlternatives(a.sentence)" href=’${setSubjectFromUrl()}’>
+              {{ a.sentence }}
             </div>
             <div class="inner-score-action">
-              <div class="transparent-icons clipboard-copy" @click="onCopyResult(x.sentence)" data-toggle="tooltip"
+              <div v-if="myRes.length > 0" class="transparent-icons clipboard-copy" @click="onCopyResult(a.sentence)"
+                data-toggle="tooltip" data-placement="top" title="Copy to clipboard">
+                <svg v-if="myRes.length > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#353535"
+                  class="bi bi-files" viewBox="0 0 16 16">
+                  <path
+                    d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
+                </svg>
+              </div>
+              <div :class="scoreClassname(a.score)" class="font-weight-bold">{{ a.score }}</div>
+            </div>
+          </div>
+
+          <h3 v-if="otherRes.length > 0">Alternatives from GPT-3 reload</h3>
+          <div class="row results-row" v-for="(y,i) in otherRes" :key="i">
+            <div class="col inner-result" @click="onClickAlternatives(y.sentence)" href=’${setSubjectFromUrl()}’>
+              {{ y.sentence }}
+            </div>
+            <div class="inner-score-action">
+              <div class="transparent-icons clipboard-copy" @click="onCopyResult(y.sentence)" data-toggle="tooltip"
                 data-placement="top" title="Copy to clipboard">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#353535" class="bi bi-files"
                   viewBox="0 0 16 16">
@@ -74,18 +92,16 @@ canonical: https://mailmeteor.com/email-subject-line-tester
                     d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
                 </svg>
               </div>
-              <div :class="scoreClassname(x.score)" class="font-weight-bold">{{ x.score }}</div>
+              <div :class="scoreClassname(y.score)" class="font-weight-bold">{{ y.score }}</div>
             </div>
           </div>
         </div>
+
       </div>
 
     </div>
 
-    <div class="test-it py-3 example-container">
-
-      Examples:
-
+    <div class="test-it py-3 example-container">Examples:
       <a href="/email-subject-line-tester?subject=What%27s+new%3F+Tons+of+new+features%21">What's
         new?
         Tons of new features!</a> -
@@ -94,7 +110,6 @@ canonical: https://mailmeteor.com/email-subject-line-tester
         feature is now available...</a> -
       <a href="/email-subject-line-tester?subject=Let%27s+get+your+hands+on+our+new+feature%21">Let's
         get your hands on our new feature!</a>
-
     </div>
   </section>
   {% endraw %}
@@ -310,6 +325,8 @@ canonical: https://mailmeteor.com/email-subject-line-tester
     data: function () {
       return {
         results: [],
+        myRes: [],
+        otherRes: [],
         subject: null,
         isFetchInProgress: false,
         isErrorWhenFetching: false,
@@ -322,6 +339,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
         this.subject = subject;
         this.fetchBackend();
       }
+      console.log("mounted ok");
     },
 
     updated: function () {
@@ -370,10 +388,9 @@ canonical: https://mailmeteor.com/email-subject-line-tester
         const baseUrl = window.location.href.indexOf('mailmeteor.com') > 0 ? 'https://mailmeteor-free-tools-4zqxxgfnaq-ue.a.run.app' : 'http://localhost:8080';
 
         axios
-          .post(`${baseUrl}/api/subject_line_`, mySubjectLine)
+          .post(`${baseUrl}/api/subject_line_tester`, mySubjectLine)
           .then((res) => {
             const resArray = res.data;
-
             resArray.forEach((element) => {
               results.push(element);
             });
@@ -392,18 +409,29 @@ canonical: https://mailmeteor.com/email-subject-line-tester
             if (err) {
               this.isErrorWhenFetching = true;
             }
-            console.log(this.isErrorWhenFetching);
+            //console.log(this.isErrorWhenFetching); //true
           })
           .finally((err) => {
             this.isFetchInProgress = false;
-            /*if (err) {
-              this.isErrorWhenFetching = true;
-            } else {
-              this.isErrorWhenFetching = false;
-            }*/
             this.mySubjectLine = "";
+            if (err) {
+              this.isErrorWhenFetching = true;
+            }
+            //console.log(this.isErrorWhenFetching); // false
+            this.myResult();
+            console.log(this.myRes);
+            this.otherResults();
           });
-        console.log(this.isErrorWhenFetching);
+
+        //console.log(this.isErrorWhenFetching); //false
+      },
+
+      myResult: function () {
+        this.myRes = this.results.shift();
+      },
+
+      otherResults: function () {
+        this.otherRes = this.results.slice(1);
       },
 
       onClickAlternatives: function (someResult) {
