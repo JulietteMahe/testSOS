@@ -113,6 +113,20 @@ let str = "Come check our new arrivals for summer 👗👗";
 
 ///////////////////  String length
 
+function numberOfCharacters(str) {
+    let numberCarac = 0;
+  
+    // test includes emoji because emoji modify total case (between 2 et 4 case for 1 emoji)
+  
+    if (emojiPattern.test(str) == true) {
+        numberCarac = (str.length) -2;
+    } else {
+        numberCarac = str.length;
+    }
+    
+    return numberCarac;
+}
+
 function stringLength(str, lengthWeight) {
   let lengthScore = 0;
 
