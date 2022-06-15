@@ -76,35 +76,55 @@ canonical: https://mailmeteor.com/email-subject-line-tester
                       d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
                   </svg>
                 </div>
-                <div :class="scoreClassname(userSubject.score)" class="font-weight-bold">{{ userSubject.score }}</div>
+                <div :class="scoreClassname(userSubject.score)" class="font-weight-bold" @mouseover="modalScore = true">
+                </div>
+                {{ userSubject.score }}
+              </div>
+              <div class="modal-content container" v-show="modalScore">
+                <div>
+                  <h4>Performance</h4>
+                  <div class="row">
+                    <p class="col-11">Subject score is {{ userSubject.score }} out of 100. This score represents the
+                      quality of
+                      writing of your subject line.</p>
+                    <div class="col-1 ">{{ userSubject.score }}</div>
+                  </div>
+                </div>
+                <div>
+                  <h4>Metrics</h4>
+                  <div></div>
+                </div>
+                <button>Close</button>
               </div>
             </div>
           </div>
 
-          <div v-if="alternativeSubjects.length > 0" id="alternativeSubjects" class="my-2">
-            <h3>Alternatives from GPT-3 reload</h3>
-            <div class="row results-row" v-for="(alternative,i) in alternativeSubjects" :key="i">
-              <a class="col inner-result" @click="onClickAlternatives(alternativeSubjects.sentence)"
-                href=’${setSubjectFromUrl()}’>
-                {{ alternative.sentence }}
-              </a>
-              <div class="inner-score-action">
-                <div class="transparent-icons clipboard-copy" @click="onCopyResult(alternative.sentence)"
-                  data-toggle="tooltip" data-placement="top" title="Copy to clipboard">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#353535" class="bi bi-files"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
-                  </svg>
-                </div>
-                <div :class="scoreClassname(alternative.score)" class="font-weight-bold">{{ alternative.score }}
-                </div>
+        </div>
+
+        <div v-if="alternativeSubjects.length > 0" id="alternativeSubjects" class="my-2">
+          <h3>Alternatives from GPT-3 reload</h3>
+          <div class="row results-row" v-for="(alternative,i) in alternativeSubjects" :key="i">
+            <a class="col inner-result" @click="onClickAlternatives(alternativeSubjects.sentence)"
+              href=’${setSubjectFromUrl()}’>
+              {{ alternative.sentence }}
+            </a>
+            <div class="inner-score-action">
+              <div class="transparent-icons clipboard-copy" @click="onCopyResult(alternative.sentence)"
+                data-toggle="tooltip" data-placement="top" title="Copy to clipboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#353535" class="bi bi-files"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
+                </svg>
+              </div>
+              <div :class="scoreClassname(alternative.score)" class="font-weight-bold">{{ alternative.score }}
               </div>
             </div>
           </div>
         </div>
-
       </div>
+
+    </div>
 
     </div>
 
@@ -338,6 +358,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
         isFetchInProgress: false,
         isErrorWhenFetching: false,
         isRequestLimitReached: false,
+        modalScore: false,
       };
     },
 
@@ -393,35 +414,30 @@ canonical: https://mailmeteor.com/email-subject-line-tester
           sentence: this.subject,
         };
 
-        let routeUrl = "";
-        console.log(this.isRequestLimitReached);
-        if (this.isRequestLimitReached === true) {
-          const routeUrl = "my_subject_tested";
-        } else {
-          const routeUrl = "subject_line_tester";
-        }
-        console.log(this.isRequestLimitReached);
-
-        const baseUrl = window.location.href.indexOf('mailmeteor.com') > 0 ? 'https://mailmeteor-free-tools-4zqxxgfnaq-ue.a.run.app/api/${routeUrl}' : 'http://localhost:8080/api/${routeUrl}';
+        const baseUrl = window.location.href.indexOf('mailmeteor.com') > 0 ? 'https://mailmeteor-free-tools-4zqxxgfnaq-ue.a.run.app/api/' : 'http://localhost:8080/api/';
+        const routeUrl = (this.isRequestLimitReached === true) ? `${baseUrl}my_subject_tested` : `${baseUrl}subject_line_tester`;
 
         axios
-          .post(`${baseUrl}`, mySubjectLine)
+          .post(routeUrl, mySubjectLine)
           .then((res) => {
-            const resArray = res.data;
+            var count = Object.keys(res.data).length;
 
-            resArray.forEach((element) => {
-              results.push(element);
-            });
+            if (count > 2) {
+              const resArray = res.data;
+              resArray.forEach((element) => {
+                results.push(element);
+              });
+              this.results = results;
+              this.myResult();
+              this.otherResults();
 
-            this.results = results;
-
-            this.myResult();
-            this.otherResults();
-
+            } else {
+              this.results.push(res.data);
+              this.myResult();
+            }
           })
           .catch((err) => {
             console.error(err);
-            console.log("je passe par catch");
             this.isErrorWhenFetching = true;
           })
           .finally((err) => {
@@ -586,6 +602,23 @@ canonical: https://mailmeteor.com/email-subject-line-tester
     text-align: center;
     color: #fd6573;
     padding-left: 10px;
+  }
+
+  .modal-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 0.5rem;
+    outline: 0;
+    padding: 1rem;
+    z-index: 2;
   }
 
   .test-it {
