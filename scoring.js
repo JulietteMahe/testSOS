@@ -6,7 +6,7 @@ function scoringAlternative(sentences) {
 
   sentences.forEach((sentence) => {
     const tempScore = scoring(sentence);
-    const numberOfCharacters = numberOfCharacters(sentence);
+    const numberCarac = numberOfCharacters(sentence);
     const numberOfWords = numberOfWords(sentence);
     const howManyEmoji = howManyEmoji(sentence);
     const howManySpam = howManySpam(sentence);
@@ -14,7 +14,7 @@ function scoringAlternative(sentences) {
     const subjectLine = {
       sentence,
       score: tempScore,
-      characters: numberOfCharacters,
+      characters: numberCarac,
       words: numberOfWords,
       emojis: howManyEmoji,
       spamWords,
