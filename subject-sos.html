@@ -173,8 +173,9 @@ canonical: https://mailmeteor.com/email-subject-line-tester
                   </svg>
                 </div>
                 <div :class="scoreClassname(alternative.score)" class="font-weight-bold"
-                  @mouseover="sendInfo(alternative)" @mouseleave="modalScoreAlternativeSubjects = false"
-                  v-b-modal=" 'my-alternatives-modal' " data-toggle="modal" data-target="#my-alternatives-modal">
+                  @mouseover="sendInfo(alternative); scoreProgress(alternative.score)"
+                  @mouseleave="modalScoreAlternativeSubjects = false" v-b-modal=" 'my-alternatives-modal' "
+                  data-toggle="modal" data-target="#my-alternatives-modal">
                   {{
                   alternative.score }}
                 </div>
@@ -203,10 +204,16 @@ canonical: https://mailmeteor.com/email-subject-line-tester
                               the
                               quality of
                               writing of your subject line.</p>
-                            <div class="modal-flag-score col-2 pl-0 pr-2 mt-0 mr-2 ml-0"
-                              :class="scoreClassname(selectedAlternativeModal.score)">
-                              {{
-                              selectedAlternativeModal.score }}</div>
+
+                            <div class="progressbar-container">
+                              <div class="circular-progress">
+                                <div class="modal-flag-score value-container"
+                                  :class="scoreClassname(selectedAlternativeModal.score)">
+                                  {{
+                                  selectedAlternativeModal.score }}</div>
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                         <div class="mt-1 mt-sm-2 mt-lg-3 mt-xl-4">
@@ -601,11 +608,11 @@ canonical: https://mailmeteor.com/email-subject-line-tester
       sendInfo: function (alternative) {
         this.selectedAlternativeModal = alternative;
         this.modalScoreAlternativeSubjects = true;
-        this.scoreProgress();
       },
 
       scoreClassname: function (score) {
         return score > 74 ? 'good-score' : score <= 74 && score >= 55 ? 'average-score' : 'bad-score';
+        this.scoreProgress();
       },
 
       setSubjectFromURL: function () {
@@ -636,20 +643,26 @@ canonical: https://mailmeteor.com/email-subject-line-tester
       scoreProgress: function (score) {
         let progressBar = document.querySelector(".circular-progress");
         let valueContainer = document.querySelector(".value-container");
-        /*console.log(progressBar, valueContainer);*/
+        console.log(progressBar, valueContainer);
 
         let progressValue = 0;
         let progressEndValue = score;
+        let maxValue = 100;
         let speed = 40;
-
+        console.log(progressEndValue);
         let progress = setInterval(() => {
           progressValue++;
 
-          valueContainer.textContent = `${progressValue}%`;
+          valueContainer.textContent = `${progressValue}`;
 
+          let coefProgress = progressValue * 3.6;
+          let coefEmpty = (maxValue - progressValue) * 3.6;
+          console.log(progressValue);
+          console.log(coefEmpty);
+          console.log(coefProgress);
           progressBar.style.background = `conic-gradient(
-          #1a53ff ${progressValue * 3.6} deg,
-          #cacbcc ${progressValue * 3.6} deg
+          #1a53ff ${coefProgress}deg,
+          #cadcff ${coefEmpty}deg
           )`;
 
           if (progressValue == progressEndValue) {
@@ -765,7 +778,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
   .good-score {
     width: 24px;
     height: auto;
-    background-color: none;
+
     margin: 10px;
     text-align: center;
     color: #57dc74;
@@ -776,7 +789,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
   .average-score {
     width: 24px;
     height: auto;
-    background-color: none;
+
     margin: 10px;
     text-align: center;
     color: #fde445;
@@ -787,7 +800,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
   .bad-score {
     width: 24px;
     height: auto;
-    background-color: none;
+
     margin: 10px;
     text-align: center;
     color: #fd6573;
@@ -865,7 +878,7 @@ canonical: https://mailmeteor.com/email-subject-line-tester
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background-color: orange;
+    background: "";
   }
 
   .circular-progress:before {
