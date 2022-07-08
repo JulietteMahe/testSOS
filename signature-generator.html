@@ -1,0 +1,975 @@
+---
+layout: tool
+
+title: 'Email signature generator'
+description: Build your own HTML email signatures using this free no-code email-signature-generator.
+
+og_title: Email signature generator
+og_description: Build your own HTML email signatures using this free no-code email-signature-generator.
+og_url: https://mailmeteor.com/email-signature-generator
+
+permalink: /email-signature-generator
+canonical: https://mailmeteor.com/email-signature-generator
+---
+
+<main>
+    <header class="container text-center">
+        <h1>Email signature generator</h1>
+        <p>Create your own HTML email signature with our free email signature generator (<a href="#faq">how it
+                works?</a>)</p>
+    </header>
+
+    <!-- APP -->
+    <section>
+        {% raw %}
+        <div id="signature-generator" :class="{fullscreen: fullscreen, container: !fullscreen}"
+            class="px-0 signature-generator">
+
+            <nav class="col-12 navbar navbar-expand-lg bg-light d-flex justify-content-between">
+
+                <div class="row ml-0">
+                    <span @click="showSideBar('idChoicesNav')" class="my-0 px-2 py-0 side-menu-btn">Profile</span>
+                    <span @click="showSideBar('contactChoicesNav')" class="my-0 px-2 py-0 side-menu-btn">Contact</span>
+                    <span @click="showSideBar('imgChoicesNav')" class="my-0 px-2 py-0 side-menu-btn">Pictures</span>
+                    <span @click="showSideBar('socialChoicesNav')" class="my-0 px-2 py-0 side-menu-btn">Socials</span>
+                </div>
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-dark btn-sm m-0 dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-expanded="false">
+                        Export <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="d-inline-flex align-items-center">
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button class="dropdown-item" @click="exportAsContentSelection" type="button">Copy
+                                template</button>
+                            <a class="dropdown-item" @click="exportAsHTMLDownload" :href="html"
+                                download="template.html">Download
+                                HTML</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" @click="toggleFullScreen(false)" href="#faq">Help</a>
+                        </div>
+                    </div>
+            </nav>
+
+            <div class="email-signature-options-render m-0">
+                <div v-if="sideBar" class="signature-generator-edition picturesMenu col-4 m-0 p-2"
+                    v-for="(dataItem,i) in dataItems" :key="i">
+
+                    <!-- ID infos -->
+                    <div v-if="idChoicesNav" class="p-2">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h3>Profile</h3>
+                            <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[0].name}}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[0].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[0].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[1].name}}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="{{ dataItem[1].name}}" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="{{ dataItem[1].name}} = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[2].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[2].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[2].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[3].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[3].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[3].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[4].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[4].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[4].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact infos -->
+                    <div v-if="contactChoicesNav" class="p-2">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h3>Contact infos</h3>
+                            <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[5].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[5].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[5].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[6].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[6].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[6].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[7].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[7].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[7].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[8].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[8].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[8].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[9].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[9].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[9].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Images & logo -->
+                    <div v-if="imgChoicesNav" class="p-2">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h3>Pictures</h3>
+                            <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[10].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[10].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[10].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[11].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[11].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[11].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Socials -->
+                    <div v-if="socialChoicesNav" class="p-2">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h3>Socials</h3>
+                            <span v-on:click="sideBar = !sideBar">X</span>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[12].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[12].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[12].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[13].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[13].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[13].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[14].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[14].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[14].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group px-0">
+                            <label>{{ dataItem[15].name }}</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="empty" class="form-control"
+                                    v-model="dataItem[15].name" />
+                                <div class="input-group-append" style="height: 38px">
+                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
+                                        v-on:click.prevent="dataItem[15].name = '' ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div
+                    class="p-0 m-0 d-flex flex-column justify-content-center align-items-center signature-generator-render">
+
+                    <div class="m-2 signature-render-container global-render">
+                        <div class="d-flex flex-column signature-render-top-border">
+                            <div class="row signature-render-header signature-render-top-border m-0 p-1">
+                                <div class="mac-dots m-1 bg-danger"></div>
+                                <div class="mac-dots m-1 bg-warning"></div>
+                                <div class="mac-dots m-1 bg-success"></div>
+                            </div>
+                            <div class="signature-render-header d-flex flex-column">
+                                <p class="ml-3 m-0 p-1">To: Your recipient</p>
+                                <p class="ml-3 m-0 p-1">Subject: My new signature</p>
+                            </div>
+                        </div>
+
+                        <div ref="render"
+                            class="signature-render-wysiwyg d-flex flex-column align-items-center justify-content-center">
+
+                            <!--  All styles for table must be in style tags NO FLEXBOX-->
+
+                            <table class="signature-render-data">
+
+                                <tr class="render-line">
+                                    <td class="signature-render-cell profile-pic-cell" style="height: 100%;
+                                    width: auto; padding: 0; object-fit: contain">
+                                        <img v-if="profilePicAddress !== '' " :src="profilePicAddress" alt="Profile pic"
+                                            style="object-fit: cover; border-radius: 50%; width: 100px; height: 100px; margin: 1.5rem"
+                                            @click="imgChoicesNav = true" />
+                                    </td>
+                                    <td class="signature-render-cell id-render-cell" style="height: 100%;
+                                    width: 70%; border-bottom: 1px solid rgb(51, 71, 91);
+                                    margin-left: 1.5rem">
+                                        <div v-if="fullName !== '' " contenteditable="true" class="clickable"
+                                            @click="idChoicesNav = true"
+                                            style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem">
+                                            {{
+                                            fullName }}</div>
+                                        <div v-if="jobTitle !== '' " contenteditable="true" class="clickable"
+                                            @click="idChoicesNav = true"
+                                            style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem">
+                                            {{
+                                            jobTitle }}</div>
+                                        <div style="display: flex; flex-direction: row; margin-left: 1rem">
+                                            <div v-if="companyDepartment !== '' " contenteditable="true"
+                                                class="clickable" @click="idChoicesNav = true"
+                                                style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-right: 0.25rem; margin-top: 0.25rem">
+                                                {{
+                                                companyDepartment }}</div>
+                                            <span style="margin: 0.25rem" v-if="companyDepartment !== '' ">-</span>
+                                            <div v-if="companyName !== '' " contenteditable="true" class="clickable"
+                                                @click="idChoicesNav = true"
+                                                style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem">
+                                                {{
+                                                companyName }}</div>
+                                        </div>
+                                        <div v-if="complementaryInfos !== '' " contenteditable="true"
+                                            @click="idChoicesNav = true" class="clickable"
+                                            style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem; max-width: 250px;">
+                                            {{
+                                            complementaryInfos }}</div>
+                                    </td>
+                                </tr>
+                                <tr class="render-line">
+
+                                    <td class="signature-render-cell col" style="height: 100%;
+                                    width: auto; padding: 0; object-fit: contain">
+                                        <img v-if="companyLogoAddress !== '' " :src="companyLogoAddress"
+                                            alt="Company logo"
+                                            style="object-fit: cover; width: 100px; height: 60px; margin: 1rem"
+                                            @click="imgChoicesNav = true" />
+                                        <div @click="imgChoicesNav = true" class="clickable"
+                                            style="display: flex; flex-direction: row; justify-content: center; height: 30px;">
+                                            <a v-if="companyFacebook !== '' " href="companyFacebook"
+                                                class="clickable rs-icon-fit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-2.308c0-1.769.931-2.692 3.029-2.692h1.971v3z" />
+                                                </svg>
+                                            </a>
+                                            <a v-if="companyTwitter !== '' " href="companyTwitter"
+                                                class="clickable rs-icon-fit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z" />
+                                                </svg>
+                                            </a>
+                                            <a v-if="companyInstagram !== '' " href="companyInstagram"
+                                                class="clickable rs-icon-fit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M14.829 6.302c-.738-.034-.96-.04-2.829-.04s-2.09.007-2.828.04c-1.899.087-2.783.986-2.87 2.87-.033.738-.041.959-.041 2.828s.008 2.09.041 2.829c.087 1.879.967 2.783 2.87 2.87.737.033.959.041 2.828.041 1.87 0 2.091-.007 2.829-.041 1.899-.086 2.782-.988 2.87-2.87.033-.738.04-.96.04-2.829s-.007-2.09-.04-2.828c-.088-1.883-.973-2.783-2.87-2.87zm-2.829 9.293c-1.985 0-3.595-1.609-3.595-3.595 0-1.985 1.61-3.594 3.595-3.594s3.595 1.609 3.595 3.594c0 1.985-1.61 3.595-3.595 3.595zm3.737-6.491c-.464 0-.84-.376-.84-.84 0-.464.376-.84.84-.84.464 0 .84.376.84.84 0 .463-.376.84-.84.84zm-1.404 2.896c0 1.289-1.045 2.333-2.333 2.333s-2.333-1.044-2.333-2.333c0-1.289 1.045-2.333 2.333-2.333s2.333 1.044 2.333 2.333zm-2.333-12c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.958 14.886c-.115 2.545-1.532 3.955-4.071 4.072-.747.034-.986.042-2.887.042s-2.139-.008-2.886-.042c-2.544-.117-3.955-1.529-4.072-4.072-.034-.746-.042-.985-.042-2.886 0-1.901.008-2.139.042-2.886.117-2.544 1.529-3.955 4.072-4.071.747-.035.985-.043 2.886-.043s2.14.008 2.887.043c2.545.117 3.957 1.532 4.071 4.071.034.747.042.985.042 2.886 0 1.901-.008 2.14-.042 2.886z" />
+                                                </svg>
+                                            </a>
+                                            <a v-if="companyLinkedin !== '' " href="companyLinkedin"
+                                                class="clickable rs-icon-fit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                    <td class="signature-render-cell" style="height: 100%;
+                                    width: 70%; margin-left: 1.5rem; padding-top: 1rem">
+                                        <div style="display: flex; flex-direction: row; margin-left: 1rem">
+                                            <div v-if="professionalTel !== '' " contenteditable="true" class="clickable"
+                                                @click="contactChoicesNav = true"
+                                                style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-right: 0.25rem; margin-top: 0.25rem">
+                                                {{
+                                                professionalTel }}</div>
+                                            <span v-if="professionalTel !== '' " style="margin: 0.25rem">-</span>
+                                            <div v-if="mobileTel !== '' " contenteditable="true" class="clickable"
+                                                @click="contactChoicesNav = true"
+                                                style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem">
+                                                {{
+                                                mobileTel }}</div>
+                                        </div>
+                                        <div v-if="email !== '' " contenteditable="true" class="clickable"
+                                            @click="contactChoicesNav = true"
+                                            style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem">
+                                            {{
+                                            email }}</div>
+                                        <div v-if="website !== '' " contenteditable="true" class="clickable"
+                                            @click="contactChoicesNav = true"
+                                            style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem">
+                                            {{
+                                            website }}</div>
+
+                                        <div v-if="addressFirstLine !== '' " contenteditable="true"
+                                            @click="contactChoicesNav = true" class="clickable"
+                                            style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem; max-width: 250px;">
+                                            {{
+                                            addressFirstLine }}</div>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endraw %}
+    </section>
+
+
+    <!-- Tool description & other tools -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="mb-3">An intuitive email signature generator for teams and individuals to amp up your
+                        email marketing ideas</h2>
+                    <p>
+                        Email Signature Generator by Mailmeteor provides a feature-rich HTML email signature builder
+                        that allows you to create and customize email signature templates up to modern
+                        standards.
+                    </p>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <div>
+                        <h3 class="text-blue-dark-reverse action-lg">Other tools</h3>
+                        <div>
+                            <h3 class="mt-3">Spam Word Checker</h3>
+                            <p>
+                                Make sure your emails don't land in spam with our
+                                <a href="/spam-checker">free spam words checker
+                                    <svg width="12" height="12" viewBox="0 0 16 16" style="margin-left: 0.25rem"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M1 7C0.447715 7 0 7.44772 0 8C0 8.55228 0.447715 9 1 9V7ZM15 8L15.7071 8.70711C16.0976 8.31658 16.0976 7.68342 15.7071 7.29289L15 8ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893C6.90237 0.683418 6.90237 1.31658 7.29289 1.70711L8.70711 0.292893ZM7.29289 14.2929C6.90237 14.6834 6.90237 15.3166 7.29289 15.7071C7.68342 16.0976 8.31658 16.0976 8.70711 15.7071L7.29289 14.2929ZM1 9H15V7H1V9ZM7.29289 1.70711L14.2929 8.70711L15.7071 7.29289L8.70711 0.292893L7.29289 1.70711ZM14.2929 7.29289L7.29289 14.2929L8.70711 15.7071L15.7071 8.70711L14.2929 7.29289Z"
+                                            fill="#1a53ff" />
+                                    </svg>
+                                </a>
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="mt-3">Email Permutator</h3>
+                            <p>
+                                Find anyone's email address thanks to our
+                                <a href="/email-permutator">free email permutator
+                                    <svg width="12" height="12" viewBox="0 0 16 16" style="margin-left: 0.25rem"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M1 7C0.447715 7 0 7.44772 0 8C0 8.55228 0.447715 9 1 9V7ZM15 8L15.7071 8.70711C16.0976 8.31658 16.0976 7.68342 15.7071 7.29289L15 8ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893C6.90237 0.683418 6.90237 1.31658 7.29289 1.70711L8.70711 0.292893ZM7.29289 14.2929C6.90237 14.6834 6.90237 15.3166 7.29289 15.7071C7.68342 16.0976 8.31658 16.0976 8.70711 15.7071L7.29289 14.2929ZM1 9H15V7H1V9ZM7.29289 1.70711L14.2929 8.70711L15.7071 7.29289L8.70711 0.292893L7.29289 1.70711ZM14.2929 7.29289L7.29289 14.2929L8.70711 15.7071L15.7071 8.70711L14.2929 7.29289Z"
+                                            fill="#1a53ff" />
+                                    </svg>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials text-center my-5">
+        <h3 class="action-lg text-blue-dark-reverse">Trusted by 3 million professionnals</h3>
+        {%- include testimonials-logo.html size="sm" -%}
+    </section>
+
+    <section class="faq" itemscope itemtype="https://schema.org/FAQPage">
+        <div class="container">
+            <h3 id="faq" class="text-center">Questions & answers about no-code email editor</h3>
+            <p class="text-center">Everything you need to know about to build email templates that shine everywhere.</p>
+
+            <div id="accordion-general" class="accordions">
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading1" data-toggle="collapse"
+                        data-target="#collapse1">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse1">How to use no-code email editor?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse1"
+                        class="collapse" aria-labelledby="heading1" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>
+                                No-code Email Editor by Mailmeteor is a <dfn
+                                    title="What You See Is What You Get">WYSIWYG</dfn> email templates builder. It helps
+                                you focus on your message while
+                                using proof-tested email templates.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading2" data-toggle="collapse"
+                        data-target="#collapse2">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse2">Which email clients are supported?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse2"
+                        class="collapse" aria-labelledby="heading2" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>
+                                The email editor uses HTML table under the hood so your emails will look stunning on
+                                modern email clients (such as Gmail, Yahoo, Superhuman, etc.), as well as
+                                two-decades old email clients (such as Outlook, Thunderbird, etc.).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading3" data-toggle="collapse"
+                        data-target="#collapse3">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse3">Are HTML content compatible with Outlook?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse3"
+                        class="collapse" aria-labelledby="heading3" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>Yes! As well as dozens of other emails clients, such as Gmail, Yahoo, Apple Mail,
+                                ZohoMail, Thunderbid, Gmail for iOS, etc.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading3bis" data-toggle="collapse"
+                        data-target="#collapse3bis">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse3bis">Are the emails responsive?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse3bis"
+                        class="collapse" aria-labelledby="heading3bis" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>
+                                Yes! Emails are responsive and will look stunning on mobile phones. We have tested the
+                                email templates in Gmail for iOS, Gmail for Android, Apple Mail for iPhone
+                                and other populars mobile email clients.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading4" data-toggle="collapse"
+                        data-target="#collapse4">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse4">Is No-code Email Editor Free?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse4"
+                        class="collapse" aria-labelledby="heading4" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>Yes! It's totally free to use. Mailmeteor makes it available to anyone interested in
+                                designing great email templates.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading5" data-toggle="collapse"
+                        data-target="#collapse5">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse5">Does no-code email editor use my data?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse5"
+                        class="collapse" aria-labelledby="heading5" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>
+                                No. Your data stays yours - <i>like all products made by Mailmeteor</i>. Content that
+                                you filled in the editor are not saved by us nor shared with a third-party.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <div class="card-header accordionpointer collapsed" id="heading6" data-toggle="collapse"
+                        data-target="#collapse6">
+                        <h3 itemprop="name" class="title-3 font-semibold mb-0" aria-expanded="true"
+                            aria-controls="collapse6">What to do once you've written your email?</h3>
+                        <span class="faq-expander"></span>
+                    </div>
+                    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" id="collapse6"
+                        class="collapse" aria-labelledby="heading6" data-parent="#accordion-general">
+                        <div class="card-body" itemprop="text">
+                            <p>Once your email look stunning in the editor, copy the HTML and send emails in your
+                                favorite clients. It could be Gmail, Outlook or anyone else.</p>
+                            <p>
+                                If you want to send highly personalized email campaigns using Gmail, have a look at <a
+                                    href="/">Mailmeteor</a>. Mailmeteor lets you send mass emails in Gmail that
+                                feel personal. It’s the most popular <a href="/mail-merge-gmail/">Gmail mail merge</a>
+                                tool, trusted by 3 million people worldwide for its simplicity and privacy
+                                focus.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="/assets/js/lib/vue@2.6.14.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@4.0.14/marked.min.js"></script>
+<script src="https://unpkg.com/lodash@4.16.0"></script>
+
+<script>
+    var app2 = new Vue({
+        el: '#signature-generator',
+        data: function () {
+            return {
+                fullName: "Mary Pesquet",
+                jobTitle: "Marketing director",
+                companyDepartment: "Marketing",
+                companyName: "Mailmeteor",
+                complementaryInfos: "",
+                professionalTel: "0202020202",
+                mobileTel: "0606060606",
+                email: "mary.pesquet@mailmeteor.com",
+                website: "mailmeteor.com",
+                addressFirstLine: "Station F, 5 Parvis Alan Turing",
+                addressSecondLine: "75013 Paris",
+                profilePicAddress: "https://mailmeteor.com/assets/img/email-templates/layout/mary-from-mailmeteor.jpg",
+                companyLogoAddress: "https://i.ibb.co/PcDLr0m/kisspng-coca-cola-enterprises-logo-drink-galeria-coca-cola-company-5b6aed88ae6ef1-773434481533734280.png",
+                companyFacebook: "https://facebook.com/profile",
+                companyTwitter: "https://twitter.com/profile",
+                companyLinkedin: "https://linkedin.com/profile",
+                companyInstagram: "https://instagram.com/profile",
+
+                dataItems: [
+                    { name: "fullName", value: "Mary Pesquet", designation: "Full name" },
+                    { name: "jobTitle", value: "Marketing director", designation: "Job title" },
+                    { name: "companyDepartment", value: "Marketing", designation: "Department" },
+                    { name: "companyName", value: "Mailmeteor", designation: "Company" },
+                    { name: "complementaryInfos", value: "", designation: "Other informations" },
+                    { name: "professionalTel", value: "0202020202", designation: "Professional phone" },
+                    { name: "mobileTel", value: "0606060606", designation: "Mobile phone" },
+                    { name: "email", value: "mary.pesquet@mailmeteor.com", designation: "Email" },
+                    { name: "website", value: "mailmeteor.com", designation: "Website" },
+                    { name: "addressFirstLine", value: "Station F, 5 Parvis Alan Turing", designation: "Address" },
+                    { name: "profilePicAddress", value: "https://mailmeteor.com/assets/img/email-templates/layout/mary-from-mailmeteor.jpg", designation: "Profile pic URL" },
+                    { name: "companyLogoAddress", value: "https://i.ibb.co/PcDLr0m/kisspng-coca-cola-enterprises-logo-drink-galeria-coca-cola-company-5b6aed88ae6ef1-773434481533734280.png", designation: "Company logo URL" },
+                    { name: "companyFacebook", value: "https://facebook.com/profile", designation: "Facebook profile" },
+                    { name: "companyTwitter", value: "https://twitter.com/profile", designation: "Twitter profile" },
+                    { name: "companyLinkedin", value: "https://linkedin.com/profile", designation: "Linkedin profile" },
+                    { name: "companyInstagram", value: "https://instagram.com/profile", designation: "Instagram profile" },
+                ],
+
+                /// Toggle navigation in options menu
+                sideBar: false,
+                imgChoicesNav: false,
+                socialChoicesNav: false,
+                idChoicesNav: false,
+                contactChoicesNav: false,
+
+                fullscreen: false,
+                html: '#download',
+            };
+        },
+
+        computed: {
+            idInputs: function () {
+                for (let i = 0; i < 5; i++)
+                return this.dataItems.filter( dataItem.index => (index < 5)),
+                console.log(idInputs);
+            }
+        }
+
+        methods: {
+
+            showSideBar: function (partie) {
+                this.sideBar = true;
+                this.imgChoicesNav = false;
+                this.socialChoicesNav = false;
+                this.idChoicesNav = false;
+                this.contactChoicesNav = false;
+                switch (partie) {
+                    case 'imgChoicesNav': this.imgChoicesNav = true;
+                        break;
+                    case 'socialChoicesNav': this.socialChoicesNav = true;
+                        break;
+                    case 'idChoicesNav': this.idChoicesNav = true;
+                        break;
+                    case 'contactChoicesNav': this.contactChoicesNav = true;
+                        break;
+                }
+            }
+
+
+            /**
+* Export methods
+*/
+            exportAsContentSelection: function () {
+                const original = this.$refs.render;
+                const clone = original.cloneNode(true);
+                document.body.appendChild(clone);
+                window.getSelection().removeAllRanges();
+                let range = document.createRange();
+                range.selectNode(clone);
+                window.getSelection().addRange(range);
+                /*   WARNING document.execCommand is depreciated   */
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+                document.body.removeChild(clone);
+            }
+
+            exportAsHTMLDownload: function () {
+                this.html = 'data:text/html;charset=UTF-8,' + encodeURIComponent(this.$refs.render.innerHTML);
+            }
+        }
+    })
+</script>
+
+<style>
+    /**
+   * signature-generator
+   */
+
+    .signature-generator {
+        border-radius: 8px;
+        box-shadow: 0 2px 0.5em 0 rgba(0, 0, 0, 0.03), 0 2px 0.5em 0 rgba(0, 0, 0, 0.09);
+    }
+
+    .email-signature-options-render {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .signature-generator-edition {
+        overflow-Y: scroll;
+        flex-grow: 1;
+    }
+
+    .signature-generator-render {
+        height: 600px;
+        width: auto;
+        background-color: #EFEFEF;
+        padding: 1rem;
+        flex-grow: 2;
+    }
+
+    .signature-render-container {
+        max-height: 450px;
+        width: 600px;
+    }
+
+    .signature-render-header {
+        background-color: rgb(51, 71, 91);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        height: 6%;
+        color: white;
+        font-size: 0.75rem;
+    }
+
+    .signature-render-data {
+        width: 100%
+    }
+
+    .signature-render-top-border {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .mac-dots {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+    }
+
+    .side-menu-btn {
+        border: none;
+        height: 100%;
+        width: auto;
+        background-color: #F8F9FA;
+    }
+
+    .form-delete-btn {
+        padding-top: 0.36rem;
+        padding-bottom: 0.36rem;
+    }
+
+    .global-render {
+        height: 75%;
+        border-collapse: collapse;
+        border: 0;
+        border-spacing: 0;
+        border-radius: 6px;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: white
+    }
+
+    .signature-render-wysiwyg {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .signature-render-data {
+        width: 450px;
+        margin-top: 40px;
+    }
+
+    .render-line {
+        width: 100%;
+        height: auto;
+    }
+
+    .signature-render-cell {
+        height: 100%;
+    }
+
+    .id-render-cell {
+        width: 60%;
+        border-bottom: 1px solid;
+        height: 100%;
+    }
+
+    .profile-pic-cell {
+        padding: 0;
+        width: auto;
+        object-fit: contain;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .company-logo-fit {
+        width: 100px;
+        height: auto;
+        max-height: 80px;
+    }
+
+    .rs-icon-fit {
+        object-fit: contain;
+        width: 24px;
+        height: 24px
+    }
+</style>

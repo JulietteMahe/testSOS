@@ -1,0 +1,66 @@
+<div id="modal-container" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.7071 1.70711C14.0976 1.31658 14.0976 0.683417 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L13.7071 1.70711ZM0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683417 14.0976 1.31658 14.0976 1.70711 13.7071L0.292893 12.2929ZM1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893C-0.0976311 0.683417 -0.0976311 1.31658 0.292893 1.70711L1.70711 0.292893ZM12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L12.2929 13.7071ZM12.2929 0.292893L0.292893 12.2929L1.70711 13.7071L13.7071 1.70711L12.2929 0.292893ZM0.292893 1.70711L12.2929 13.7071L13.7071 12.2929L1.70711 0.292893L0.292893 1.70711Z"
+                fill="#04143A"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-1 mt-sm-2 mt-lg-3 mt-xl-4">
+            <h4 class="score-modal-subtitle">Performance</h4>
+            <div class="d-flex flex.row">
+              <p class="col-10 pl-0">Subject score is <span class="score-duo-metrics">{{ modalDataObject.score
+                  }}</span> out of 100. This score
+                represents
+                the
+                quality of
+                writing of your subject line.</p>
+
+              <div class="progressbar-container">
+                <div class="circular-progress">
+                  <div class="modal-flag-score value-container" :class="scoreClassname(modalDataObject.score)">
+                    {{modalDataObject.score }}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="mt-1 mt-sm-2 mt-lg-3 mt-xl-4">
+            <h4 class="score-modal-subtitle">Metrics</h4>
+
+            <div class="d-flex flex.row">
+              <div class="duo-metrics d-flex flex.row justify-content-between">
+                <p class="mb-2 mr-2 category-metrics">Characters</p>
+                <div class="score-duo-metrics ml-1 mr-1">{{ modalDataObject.characters }}</div>
+              </div>
+              <div class="duo-metrics d-flex flex.row justify-content-between">
+                <p class="mb-2 mr-2 category-metrics">Words</p>
+                <div class="score-duo-metrics ml-1 mr-1">{{ modalDataObject.words }}</div>
+              </div>
+            </div>
+
+            <div class="d-flex flex.row">
+              <div class="duo-metrics d-flex flex.row justify-content-between">
+                <p class="mb-2 mr-2 category-metrics">Occurence of Emojis</p>
+                <div class="score-duo-metrics ml-1 mr-1">{{ modalDataObject.emojis }}</div>
+              </div>
+              <div class="duo-metrics d-flex flex.row justify-content-between">
+                <p class="mb-2 mr-2 category-metrics">Spam words scanned</p>
+                <div class="score-duo-metrics ml-1 mr-1">{{ modalDataObject.spamwords }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-close-modal" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
