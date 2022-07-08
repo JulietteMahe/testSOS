@@ -53,24 +53,24 @@ canonical: https://mailmeteor.com/email-signature-generator
             </nav>
 
             <div class="email-signature-options-render m-0">
-                <div v-if="sideBar" class="signature-generator-edition picturesMenu col-4 m-0 p-2"
-                    v-for="(dataItem,i) in dataItems" :key="i">
+                <div v-if="sideBar" class="signature-generator-edition picturesMenu col-4 m-0 p-2">
 
                     <!-- ID infos -->
-                    <div v-if="idChoicesNav" class="p-2">
+                    <div v-if="idChoicesNav" class="p-2" v-for="(profileMenu, i, name) in profileMenus" :key="i"
+                        :name="name">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Profile</h3>
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
                         <div class="form-group px-0">
-                            <label>{{ dataItem[0].name}}</label>
+                            <label>{{ profileMenu.name}}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[0].name" />
+                                    v-model="profileMenu.name" />
                                 <div class="input-group-append" style="height: 38px">
                                     <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[0].name = '' ">
+                                        v-on:click.prevent="profileMenu.name = '' ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -81,166 +81,24 @@ canonical: https://mailmeteor.com/email-signature-generator
                             </div>
                         </div>
 
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[1].name}}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="{{ dataItem[1].name}}" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="{{ dataItem[1].name}} = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[2].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[2].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[2].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[3].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[3].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[3].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[4].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[4].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[4].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Contact infos -->
-                    <div v-if="contactChoicesNav" class="p-2">
+                    <div v-if="contactChoicesNav" class="p-2" v-for="(contactMenu, i, name) in contactMenus" :key="i"
+                        :name="name">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Contact infos</h3>
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
                         <div class="form-group px-0">
-                            <label>{{ dataItem[5].name }}</label>
+                            <label>{{ contactMenu.name }}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[5].name" />
+                                    v-model="contactMenu.name" />
                                 <div class="input-group-append" style="height: 38px">
                                     <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[5].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[6].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[6].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[6].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[7].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[7].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[7].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[8].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[8].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[8].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[9].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[9].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[9].name = '' ">
+                                        v-on:click.prevent="contactMenu.name = '' ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -254,20 +112,19 @@ canonical: https://mailmeteor.com/email-signature-generator
                     </div>
 
                     <!-- Images & logo -->
-                    <div v-if="imgChoicesNav" class="p-2">
+                    <div v-if="imgChoicesNav" class="p-2" v-for="(imgMenu, i, name) in imgMenus" :key="i" :name="name">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Pictures</h3>
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
                         <div class="form-group px-0">
-                            <label>{{ dataItem[10].name }}</label>
+                            <label>{{ imgMenu.name }}</label>
                             <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[10].name" />
+                                <input type="text" placeholder="empty" class="form-control" v-model="imgMenu.name" />
                                 <div class="input-group-append" style="height: 38px">
                                     <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[10].name = '' ">
+                                        v-on:click.prevent="imgMenu.name = '' ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -278,94 +135,23 @@ canonical: https://mailmeteor.com/email-signature-generator
                             </div>
                         </div>
 
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[11].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[11].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[11].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Socials -->
-                    <div v-if="socialChoicesNav" class="p-2">
+                    <div v-if="socialChoicesNav" class="p-2" v-for="(socialMenu, i, name) in socialMenus" :key="i"
+                        :name="name">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Socials</h3>
                             <span v-on:click="sideBar = !sideBar">X</span>
                         </div>
 
                         <div class="form-group px-0">
-                            <label>{{ dataItem[12].name }}</label>
+                            <label>{{ socialMenu.name }}</label>
                             <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[12].name" />
+                                <input type="text" placeholder="empty" class="form-control" v-model="socialMenu.name" />
                                 <div class="input-group-append" style="height: 38px">
                                     <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[12].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[13].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[13].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[13].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[14].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[14].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[14].name = '' ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group px-0">
-                            <label>{{ dataItem[15].name }}</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="empty" class="form-control"
-                                    v-model="dataItem[15].name" />
-                                <div class="input-group-append" style="height: 38px">
-                                    <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="dataItem[15].name = '' ">
+                                        v-on:click.prevent="socialMenu.name = '' ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -782,18 +568,34 @@ canonical: https://mailmeteor.com/email-signature-generator
                 idChoicesNav: false,
                 contactChoicesNav: false,
 
+                profileMenus: null,
+                contactMenus: null,
+                imgMenus: null,
+                socialMenus: null,
+
                 fullscreen: false,
                 html: '#download',
             };
         },
 
         computed: {
-            idInputs: function () {
-                for (let i = 0; i < 5; i++)
-                return this.dataItems.filter( dataItem.index => (index < 5)),
-                console.log(idInputs);
-            }
-        }
+            profileArray: function () {
+                this.profileMenus = dataItems.filter(index => index < 5);
+            },
+
+            contactArray: function () {
+                this.contactMenus = dataItems.filter(index => (index >= 5) && (index < 10));
+            },
+
+            imgArray: function () {
+                this.imgMenus = dataItems.filter(index => (index >= 10) && (index < 12));
+            },
+
+            socialArray: function () {
+                this.socialMenus = dataItems.filter(index => (index >= 12) && (index < 16));
+            },
+        },
+
 
         methods: {
 
@@ -813,8 +615,7 @@ canonical: https://mailmeteor.com/email-signature-generator
                     case 'contactChoicesNav': this.contactChoicesNav = true;
                         break;
                 }
-            }
-
+            },
 
             /**
 * Export methods
@@ -831,7 +632,7 @@ canonical: https://mailmeteor.com/email-signature-generator
                 document.execCommand('copy');
                 window.getSelection().removeAllRanges();
                 document.body.removeChild(clone);
-            }
+            },
 
             exportAsHTMLDownload: function () {
                 this.html = 'data:text/html;charset=UTF-8,' + encodeURIComponent(this.$refs.render.innerHTML);
