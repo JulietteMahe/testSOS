@@ -62,15 +62,15 @@ canonical: https://mailmeteor.com/email-signature-generator
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
-                        <div class="form-group px-0" v-for="(profileMenu, i, name) in profileMenus" :key="i"
-                            :name="name">
-                            <label>{{ profileMenus.name}}</label>
+                        <div class="form-group px-0" v-for="(profileMenu, i, name, designation, value) in profileMenus"
+                            :key="i" :name="name" :value="value">
+                            <label>{{ profileMenu.designation}}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control"
-                                    v-model="profileMenus.name" />
+                                    v-model="profileMenu.value" />
                                 <div class="input-group-append" style="height: 38px">
                                     <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="profileMenus.name = '' ">
+                                        v-on:click.prevent="profileMenu.value = '' ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -203,7 +203,7 @@ canonical: https://mailmeteor.com/email-signature-generator
                                             @click="idChoicesNav = true"
                                             style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem">
                                             {{
-                                            fullName }}</div>
+                                            profileMenus[0].value }}</div>
                                         <div v-if="jobTitle !== '' " contenteditable="true" class="clickable"
                                             @click="idChoicesNav = true"
                                             style="font-family: Arial, Helvetica, sans-serif; font-size: 1rem; margin-top: 0.25rem; margin-left: 1rem">
@@ -567,10 +567,10 @@ canonical: https://mailmeteor.com/email-signature-generator
                 idChoicesNav: false,
                 contactChoicesNav: false,
 
-                profileMenus: null,
-                contactMenus: null,
-                imgMenus: null,
-                socialMenus: null,
+                profileMenus: [],
+                contactMenus: [],
+                imgMenus: [],
+                socialMenus: [],
 
                 fullscreen: false,
                 html: '#download',
@@ -580,7 +580,11 @@ canonical: https://mailmeteor.com/email-signature-generator
         computed: {
             profileArray: function () {
                 this.profileMenus = dataItems.filter(index => index < 5);
-
+                this.fullName = this.profileMenus[0].value;
+                this.jobTitle = this.profileMenus[1].value;
+                this.companyDepartment = this.profileMenus[2].value;
+                this.companyName = this.profileMenus[3].value;
+                this.complementaryInfos = this.profileMenus[4].value;
             },
 
             contactArray: function () {
@@ -605,6 +609,11 @@ canonical: https://mailmeteor.com/email-signature-generator
                 this.socialChoicesNav = false;
                 this.idChoicesNav = false;
                 this.contactChoicesNav = false;
+                this.profileArray();
+                this.contactArray();
+                this.imgArray();
+                this.socialArray();
+
                 switch (partie) {
                     case 'imgChoicesNav': this.imgChoicesNav = true;
                         break;
@@ -615,6 +624,29 @@ canonical: https://mailmeteor.com/email-signature-generator
                     case 'contactChoicesNav': this.contactChoicesNav = true;
                         break;
                 }
+            },
+
+            profileArray: function () {
+                for (let i = 0; i < 5; i++) {
+                    this.profileMenus.push(this.dataItems[i]);
+                }
+                this.profileMenus[0].value = this.fullName;
+                this.jobTitle = this.profileMenus[1].value;
+                this.companyDepartment = this.profileMenus[2].value;
+                this.companyName = this.profileMenus[3].value;
+                this.complementaryInfos = this.profileMenus[4].value;
+            },
+
+            contactArray: function () {
+                this.contactMenus = this.dataItems.filter(index => (index >= 5) && (index < 10));
+            },
+
+            imgArray: function () {
+                this.imgMenus = this.dataItems.filter(index => (index >= 10) && (index < 12));
+            },
+
+            socialArray: function () {
+                this.socialMenus = this.dataItems.filter(index => (index >= 12) && (index < 16));
             },
 
             /**
