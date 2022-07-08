@@ -56,21 +56,21 @@ canonical: https://mailmeteor.com/email-signature-generator
                 <div v-if="sideBar" class="signature-generator-edition picturesMenu col-4 m-0 p-2">
 
                     <!-- ID infos -->
-                    <div v-if="idChoicesNav" class="p-2" v-for="(profileMenu, i, name) in profileMenus" :key="i"
-                        :name="name">
+                    <div v-if="idChoicesNav" class="p-2">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Profile</h3>
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
-                        <div class="form-group px-0">
-                            <label>{{ profileMenu.name}}</label>
+                        <div class="form-group px-0" v-for="(profileMenu, i, name) in profileMenus" :key="i"
+                            :name="name">
+                            <label>{{ profileMenus.name}}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control"
-                                    v-model="profileMenu.name" />
+                                    v-model="profileMenus.name" />
                                 <div class="input-group-append" style="height: 38px">
                                     <button class="form-delete-btn btn btn-outline-secondary my-0 px-2" type="button"
-                                        v-on:click.prevent="profileMenu.name = '' ">
+                                        v-on:click.prevent="profileMenus.name = '' ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -84,14 +84,14 @@ canonical: https://mailmeteor.com/email-signature-generator
                     </div>
 
                     <!-- Contact infos -->
-                    <div v-if="contactChoicesNav" class="p-2" v-for="(contactMenu, i, name) in contactMenus" :key="i"
-                        :name="name">
+                    <div v-if="contactChoicesNav" class="p-2">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Contact infos</h3>
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
-                        <div class="form-group px-0">
+                        <div class="form-group px-0" v-for="(contactMenu, i, name) in contactMenus" :key="i"
+                            :name="name">
                             <label>{{ contactMenu.name }}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control"
@@ -112,13 +112,13 @@ canonical: https://mailmeteor.com/email-signature-generator
                     </div>
 
                     <!-- Images & logo -->
-                    <div v-if="imgChoicesNav" class="p-2" v-for="(imgMenu, i, name) in imgMenus" :key="i" :name="name">
+                    <div v-if="imgChoicesNav" class="p-2">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Pictures</h3>
                             <span v-on:click="sideBar = !sideBar" class="mb-1">X</span>
                         </div>
 
-                        <div class="form-group px-0">
+                        <div class="form-group px-0" v-for="(imgMenu, i, name) in imgMenus" :key="i" :name="name">
                             <label>{{ imgMenu.name }}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control" v-model="imgMenu.name" />
@@ -138,14 +138,13 @@ canonical: https://mailmeteor.com/email-signature-generator
                     </div>
 
                     <!-- Socials -->
-                    <div v-if="socialChoicesNav" class="p-2" v-for="(socialMenu, i, name) in socialMenus" :key="i"
-                        :name="name">
+                    <div v-if="socialChoicesNav" class="p-2">
                         <div class="d-flex flex-row justify-content-between">
                             <h3>Socials</h3>
                             <span v-on:click="sideBar = !sideBar">X</span>
                         </div>
 
-                        <div class="form-group px-0">
+                        <div class="form-group px-0" v-for="(socialMenu, i, name) in socialMenus" :key="i" :name="name">
                             <label>{{ socialMenu.name }}</label>
                             <div class="input-group">
                                 <input type="text" placeholder="empty" class="form-control" v-model="socialMenu.name" />
@@ -581,6 +580,7 @@ canonical: https://mailmeteor.com/email-signature-generator
         computed: {
             profileArray: function () {
                 this.profileMenus = dataItems.filter(index => index < 5);
+
             },
 
             contactArray: function () {
